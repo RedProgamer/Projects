@@ -5,6 +5,12 @@
   font-weight: bold;
 }
 
+.small-text {
+  margin-top: -80px;
+  font-weight: bold;
+  opacity: 0.5;
+}
+
 * {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
