@@ -1,9 +1,13 @@
-import React from 'react';
-import { List, ListItem, ListItemText, ListItemAvatar, Avatar } from '@material-ui/core';
+import React, { useState } from 'react';
+import { List, ListItem, ListItemText, ListItemAvatar, Modal, Avatar} from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import { makeStyles } from '@material-ui/core/styles';
 import { green, pink } from '@material-ui/core/colors';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import EditIcon from '@material-ui/icons/Edit';
 import './Todo.css';
+import db from './firebase';
 
 // import ImageIcon from '@material-ui/icons/Image';
 
@@ -24,22 +28,66 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
+  const useEditStyles = makeStyles((theme) => ({
+    paper: {
+      position: 'absolute',
+      width: 400,
+      backgroundColor: theme.palette.background.paper,
+      border: '2px solid #000',
+      boxShadow: theme.shadows[5],
+      padding: theme.spacing(2, 4, 3),
+    },
+  }));
+
 function Todo(props) {
 
+  const [open, setOpen] = useState(false);
+  const [input, setInput] = useState('');
+  const editClasses = useEditStyles();
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
     const classes = useStyles();
+    const updateTodo = () => {
+      // update the todo with new input text
+      db.collection('todos').doc(props.todo.id).set({
+        todo: input,
+      }, { merge: true });
+
+      setOpen(false);
+    }
 
     return (
+      <>
+      <Modal
+        open={open}
+        onClose={handleClose}>
+          <div className={editClasses.paper}>
+            <h1>Hello Modal</h1>
+            <input placeholder={props.todo.todo} value={input} onChange={event => setInput(event.target.value)}></input>
+            <Button onClick={updateTodo} variant="contained" color="primary">Confirm</Button>
+          </div>
+        </Modal>
         <List className="todo__list">
             <ListItem>
             <ListItemAvatar>
-                <Avatar className={classes.green}>
+                <Avatar className={classes.pink}>
                     <AssignmentIcon />
                 </Avatar>
             </ListItemAvatar>
-                <ListItemText primary={props.text} secondary="Deadline ⏰" />
+                <ListItemText primary={props.todo.todo} secondary="Deadline ⏰" />
             </ListItem>
+            <Button onClick={e => setOpen(true)}>Edit <EditIcon fontSize="small"></EditIcon></Button>
+            <DeleteForeverIcon onClick={event => db.collection('todos').doc(props.todo.id).delete()} />
         </List>
-    )
+        </>
+    ) 
 }
 
 export default Todo;

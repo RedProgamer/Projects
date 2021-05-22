@@ -14,7 +14,7 @@ function App() {
     // this code fires everytime app.js is called
     db.collection('todos').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
       // console.log(snapshot.docs.map(doc => doc.data()));
-      setTodos(snapshot.docs.map(doc => doc.data().todo));
+      setTodos(snapshot.docs.map(doc => ({id: doc.id, todo: doc.data().todo})));
     });
   }, []);
 
@@ -36,20 +36,21 @@ function App() {
 
       <h1>Todo App</h1>
 
-      <FormControl>
-        <InputLabel htmlFor="my-input">📝Write a todo</InputLabel>
-        <Input id="my-input" type="text" value={input} onChange={event => setInput(event.target.value)}/>
-        <FormHelperText id="my-helper-text">Populate your todo app</FormHelperText>
-      </FormControl>
+          <FormControl>
+            <InputLabel htmlFor="my-input">📝Write a todo</InputLabel>
+            <Input id="my-input" type="text" value={input} onChange={event => setInput(event.target.value)}/>
+            <FormHelperText id="my-helper-text">Populate your todo app</FormHelperText>
+          </FormControl>
+            <Button disabled={!input} type="submit" onClick={addTodo} variant="contained" color="primary" size="small">Add Todo</Button> 
 
-      <Button disabled={!input} type="submit" onClick={addTodo} variant="contained" color="primary">Add Todo</Button> 
-
-      <ul>
-        {todos.map(todo => (
-          <Todo text={todo} />
-        ))}
-        </ul>
-    </div>
+          <div className="actual__todos">
+            <ul>
+              {todos.map(todo => (
+                <Todo todo={todo} />
+              ))}
+            </ul>
+            </div>
+          </div>
   );
 }
 
