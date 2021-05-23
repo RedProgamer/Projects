@@ -2,6 +2,7 @@ import { Button, FormControl, FormHelperText, Input, InputLabel } from '@materia
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import db  from './firebase';
+import './Todo.css';
 import Todo from './Todo';
 import firebase from "firebase";
 
@@ -33,15 +34,19 @@ function App() {
 
   return (
     <div className="App">
+      <div className="header">
+        <h1 className="main-header">Todo App</h1>
+      </div>
 
-      <h1>Todo App</h1>
-
-          <FormControl>
-            <InputLabel htmlFor="my-input">📝Write a todo</InputLabel>
-            <Input id="my-input" type="text" value={input} onChange={event => setInput(event.target.value)}/>
-            <FormHelperText id="my-helper-text">Populate your todo app</FormHelperText>
-          </FormControl>
-            <Button disabled={!input} type="submit" onClick={addTodo} variant="contained" color="primary" size="small">Add Todo</Button> 
+        <div className="container">
+          <div className="userInputFields">
+            <FormControl className="userInputControl">
+                <InputLabel htmlFor="my-input" variant="outlined" color="secondary">📝Write a todo</InputLabel>
+                <Input id="my-input" className="userInput" color="secondary" type="text" value={input} onChange={event => setInput(event.target.value)}/>
+                <FormHelperText id="my-helper-text">Populate your todo app</FormHelperText>
+            </FormControl>
+            <Button disabled={!input} type="submit" className="submitButton" onClick={addTodo} variant="contained" color="primary" size="small">Add Todo</Button> 
+          </div>
 
           <div className="actual__todos">
             <ul>
@@ -49,8 +54,9 @@ function App() {
                 <Todo todo={todo} />
               ))}
             </ul>
-            </div>
           </div>
+        </div>
+    </div>
   );
 }
 

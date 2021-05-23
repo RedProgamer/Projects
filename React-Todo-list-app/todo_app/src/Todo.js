@@ -74,18 +74,22 @@ function Todo(props) {
             <Button onClick={updateTodo} variant="contained" color="primary">Confirm</Button>
           </div>
         </Modal>
-        <List className="todo__list">
-            <ListItem>
-            <ListItemAvatar>
-                <Avatar className={classes.pink}>
-                    <AssignmentIcon />
-                </Avatar>
-            </ListItemAvatar>
-                <ListItemText primary={props.todo.todo} secondary="Deadline ⏰" />
-            </ListItem>
-            <Button onClick={e => setOpen(true)}>Edit <EditIcon fontSize="small"></EditIcon></Button>
-            <DeleteForeverIcon onClick={event => db.collection('todos').doc(props.todo.id).delete()} />
-        </List>
+        <div className="mainContent">
+          <List className="todo__list">
+              <ListItem className="objectInfo">
+              <ListItemAvatar>
+                  <Avatar className={classes.pink}>
+                      <AssignmentIcon />
+                  </Avatar>
+              </ListItemAvatar>
+                  <ListItemText primary={props.todo.todo} secondary="Deadline ⏰" />
+              </ListItem>
+              <div className="editObjectInfo">
+                <Button onClick={e => setOpen(true)}>Edit <EditIcon fontSize="small"></EditIcon></Button>
+                <DeleteForeverIcon className="deleteTodo" onClick={event => db.collection('todos').doc(props.todo.id).delete()} />
+              </div>
+          </List>
+        </div>
         </>
     ) 
 }

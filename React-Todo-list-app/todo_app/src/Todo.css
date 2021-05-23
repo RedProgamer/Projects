@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+.App {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Roboto", sans-serif;
+}
+
+.header {
+    height: 70px;
+    width: 100%;
+    background-color: #e91e63;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.main-header {
+    margin: 0;
+    color: #fff;
+    font-family: inherit;
+    letter-spacing: 0.15rem;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+    /* border: 1px solid #000; */
+    margin-top: 20px;
+    padding: 20px 0px;
+}
+
+.userInput {
+    width: 300px;
+}
+
+.userInputFields {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    grid-template-columns: 35% 12%;
+}
+
+.submitButton {
+    padding-top: 20px;
+    padding-bottom: 30px;
+}
+
+.mainContent {
+    display: grid;
+    align-items: center;
+    /* justify-content: center; */
+    border: 0.1px solid #ccc;
+    /* background-color: #ccc; */
+    border-radius: 20px;
+    box-shadow: 5px 5px 5px 5px rgba(206, 188, 188, 0.904); 
+    width: 550px;
+    margin-left: 120px;
+    margin-bottom: 20px;
+}
+
+.todo__list {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* border: 1px solid #000; */
+    /* margin-bottom: 20px; */
+}
+
+.editObjectInfo {
+    display: flex;
+    align-items: center;
+    padding-right: 10px;
+}
+
+.deleteTodo {
+    cursor: pointer;
+}
