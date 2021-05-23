@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { List, ListItem, ListItemText, ListItemAvatar, Modal, Avatar} from '@material-ui/core';
+import { List, ListItem, ListItemText, ListItemAvatar, Modal, Avatar, Input} from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import { makeStyles } from '@material-ui/core/styles';
@@ -67,11 +67,13 @@ function Todo(props) {
       <>
       <Modal
         open={open}
-        onClose={handleClose}>
-          <div className={editClasses.paper}>
-            <h1>Hello Modal</h1>
-            <input placeholder={props.todo.todo} value={input} onChange={event => setInput(event.target.value)}></input>
-            <Button onClick={updateTodo} variant="contained" color="primary">Confirm</Button>
+        onClose={handleClose} className="editModal">
+          <div className={editClasses.paper} id="innerModal">
+            <h1 className="innerModalHeading">Edit Todo</h1>
+            <div className="modalChanges">
+              <Input placeholder={props.todo.todo} value={input} onChange={event => setInput(event.target.value)} color="secondary"></Input>
+              <Button onClick={updateTodo} variant="contained" color="secondary">Confirm</Button>
+            </div>
           </div>
         </Modal>
         <div className="mainContent">
