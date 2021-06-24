@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Async JavaScript</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" integrity="undefined" crossorigin="anonymous">
+</head>
+<body>
+
+    <style>
+        #floatingInput {
+            margin: 20px 0px;
+        }
+
+        .list-group {
+            margin-top: 40px;
+        }
+    </style>
+
+    <div class="container">
+        <h1>Dumb Joke Generator</h1>
+        <form>
+            <div class="form-floating mb-3">
+                <input type="number" id="floatingInput" class="form-control"  placeholder="Enter a number">
+                <label for="floatingInput">Number of Jokes</label>
+            </div>
+            <div>
+                <button class="btn btn-primary">Get Jokes</button>
+            </div>
+        </form>
+        <ol class="list-group list-group-numbered"></ol>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
