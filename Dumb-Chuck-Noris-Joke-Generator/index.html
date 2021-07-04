@@ -17,6 +17,10 @@
         .list-group {
             margin-top: 40px;
         }
+
+        .btn {
+            margin-top: 10px;
+        }
     </style>
 
     <div class="container">
@@ -25,6 +29,18 @@
             <div class="form-floating mb-3">
                 <input type="number" id="floatingInput" class="form-control"  placeholder="Enter a number">
                 <label for="floatingInput">Number of Jokes</label>
+            </div>
+            <div class="form-check">
+                <input type="checkbox" name="category" class="form-check-input" value="nerdy" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                    Nerdy
+                </label>
+            </div>
+            <div class="form-check">
+                <input type="checkbox" name="category" class="form-check-input" value="explicit" id="flexCheckDefault">
+                <label class="form-check-label" for="flexCheckDefault">
+                    Explicit
+                </label>
             </div>
             <div>
                 <button class="btn btn-primary">Get Jokes</button>
