@@ -1,5 +1,11 @@
+// Initializing storage class
+const storage = new Storage();
+
+// Get stored location data
+const weatherLocation = storage.getLocationData();
+
 // Initialize weather class
-const weather = new Weather('Kolkata', 'in');
+const weather = new Weather(weatherLocation.city, weatherLocation.country);
 const ui = new UI();
 
 document.addEventListener('DOMContentLoaded', getWeather);
@@ -9,5 +15,36 @@ function getWeather() {
     .then(data => ui.paint(data))
     .catch(err => console.log(err));    
 };
+
+
+//Changing Weather
+const new_city = document.getElementById('city');
+const new_country = document.getElementById('country');
+const changesBtn = document.getElementById('w-change-btn');
+
+
+changesBtn.addEventListener('click', changeWeather);
+
+function changeWeather() {
+    weather.changeLocation(new_city.value, new_country.value);
+
+    // set location in localStorage
+    storage.setLocationData(new_city.value, new_country.value);
+
+    getWeather();
+
+    $('#locModal').modal('hide');
+};
+
+// Handling edge cases
+
+if(new_city.value.trim() === '' && new_country.value.trim() === '')
+    alert('Empty Fields, please fill them');
+else if(new_city.value.trim() === '')
+    alert('Please fill the city field');
+else if(new_country.value.trim() === '')
+    alert('Please fill the country field (IN)');
+
+
 
 
