@@ -26,24 +26,31 @@ const changesBtn = document.getElementById('w-change-btn');
 changesBtn.addEventListener('click', changeWeather);
 
 function changeWeather() {
+    if(handleEdgeCases())
+        $('#locModal').modal('hide');
+    
     weather.changeLocation(new_city.value, new_country.value);
-
+    
     // set location in localStorage
     storage.setLocationData(new_city.value, new_country.value);
-
+    
     getWeather();
 
-    $('#locModal').modal('hide');
 };
 
 // Handling edge cases
 
-if(new_city.value.trim() === '' && new_country.value.trim() === '')
-    alert('Empty Fields, please fill them');
-else if(new_city.value.trim() === '')
-    alert('Please fill the city field');
-else if(new_country.value.trim() === '')
-    alert('Please fill the country field (IN)');
+function handleEdgeCases() {
+    if(new_city.value.trim() === '' && new_country.value.trim() === '')
+        alert('Empty Fields, please fill them');
+    else if(new_city.value.trim() === '')
+        alert('Please fill the city field');
+    else if(new_country.value.trim() === '')
+        alert('Please fill the country field (IN)');
+    else if(new_city.value.trim() && new_country.value.trim())
+        return true;
+    return false;
+}
 
 
 
