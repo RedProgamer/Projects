@@ -1,0 +1,39 @@
+span {
+    font-family: clockicons, sans-serif;
+}
+
+.container {
+    text-align: center;
+    margin-top: 100px;    
+}
+
+.main-heading {
+    color: #fff;
+}
+
+.navbar {
+    justify-content: center;
+}
+
+.container-sm {
+    width:40%;
+    margin-top: 50px;
+}
+
+.table {
+    text-align: center;
+}
+
+.list-group {
+    text-align: center;
+}
+
+
+ul {
+    margin-top: 50px;
+}
+
+.milli-seconds {
+    margin-left: 5px;
+    font-size: 25px;
+}

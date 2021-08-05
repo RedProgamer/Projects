@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StopWatch Timer</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <h1 class="main-heading">Stopwatch</h1>
+    </nav>
+
+    <div class="container">
+        <h1><span class="hour">00</span> : <span class="minutes">00</span> : <span class="seconds">00</span> . <span class="milli-seconds text-muted">00</span></h1>
+    
+        <button class="btn btn-primary start">Start</button>
+        <button class="btn btn-primary laps">Laps</button>
+        <button class="btn btn-primary reset">Reset</button>
+    </div>
+    
+    <div class="container-sm">
+        <ol class="list-group list-group-numbered list-group-vertial-sm">
+            
+        </ol>
+
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Time</th>
+            <th scope="col">Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- <tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Twin</td>
+          </tr> -->
+        </tbody>
+      </table>
+
+      </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
