@@ -48,13 +48,15 @@ let hourOut = 0, minutesOut = 0, secondsOut = 0, milliSecondsOut = 0;
 let previousLapse = 0, TotalmilliSeconds = 0, diff = 0, id = 1;
 let timeLists = [];
 let time = {};
+let lastLaps = {hours: 0, mins: 0, secs: 0, milliseconds: 0};
+let lapHour = 0, lapMins = 0, lapSeconds = 0, lapMilliseconds = 0;
    
 function timer() {
 
-    hourOut = cleaner(hrs);
-    minutesOut = cleaner(mins);
-    secondsOut = cleaner(secs);
-    milliSecondsOut = cleaner(miliSec);
+    hourOut = hrs;
+    minutesOut = mins;
+    secondsOut = secs;
+    milliSecondsOut = miliSec;
     
     ++miliSec;  
     
@@ -74,10 +76,10 @@ function timer() {
     }
     
     
-    hours.innerHTML = hourOut;
-    minutes.innerHTML = minutesOut;
-    seconds.innerHTML = secondsOut;
-    milli_seconds.innerHTML = milliSecondsOut; 
+    hours.innerHTML = cleaner(hourOut);
+    minutes.innerHTML = cleaner(minutesOut);
+    seconds.innerHTML = cleaner(secondsOut);
+    milli_seconds.innerHTML = cleaner(milliSecondsOut); 
 };
 
 function cleaner(time) {
@@ -89,59 +91,34 @@ function cleaner(time) {
 
 function lapsRecord() {
 
-    if(miliSec <= 0) {
-        console.log('No records');
-    }else {
-        // time = {
-        //     id: id,
-        //     hours: hrs,
-        //     minutes: mins,
-        //     seconds: secs,
-        //     milliSeconds: miliSec
-        // };
-        time = {
-            id: id,
-            hours: hourOut,
-            minutes: minutesOut,
-            seconds: secondsOut,
-            milliSeconds: milliSecondsOut
-        };
-        // console.log(`Hour : ${time.hours}, Minutes : ${time.minutes}, Seconds : ${time.seconds}, Milliseconds : ${time.milliSeconds}`);
-        id++;
+    time = {
+        id: id,
+        hours: hrs,
+        minutes: mins,
+        seconds: secs,
+        milliSeconds: miliSec
+    };
+    // console.log(`Hour : ${time.hours}, Minutes : ${time.minutes}, Seconds : ${time.seconds}, Milliseconds : ${time.milliSeconds}`);
+    id++;
 
-        
-        const currentLapse = new Date();
-        
-        currentLapse.setHours(time.hours);
-        currentLapse.setMinutes(time.minutes);
-        currentLapse.setSeconds(time.seconds);
-        currentLapse.setMilliseconds(time.milliSeconds);
-        
-        TotalmilliSeconds = currentLapse.getTime();
-        
-        diff = TotalmilliSeconds - previousLapse;
-        previousLapse = TotalmilliSeconds;
-
-        // const diffObj = differenceInTime(diff);
-        // console.log(diffObj);
-
-        // addToLists(time);
-        addToTable(time);
-    }
-
-    // console.log("Difference : " + diff);
+    const diff = differenceInTime(time);
+    addToTable(time, diff);
 
 };
 
 function reset() {
-
     
     switcher = 2;
     startStop();
     
     hrs = 0, mins = 0, secs = 0, miliSec = 0;
     previousLapse = 0, TotalmilliSeconds = 0, diff = 0, id = 1;
-    
+
+    timeLists = [];
+    time = {};
+    lastLaps = {hours: 0, mins: 0, secs: 0, milliseconds: 0};
+    lapHour = 0, lapMins = 0, lapSeconds = 0, lapMilliseconds = 0;
+        
     hours.innerHTML = "00";
     minutes.innerHTML = "00";
     seconds.innerHTML = "00";
@@ -160,20 +137,7 @@ function reset() {
     resetBtn.disabled = true;
 };
 
-function addToLists(time) {
-    
-    const li = document.createElement('li');
-    li.className = 'list-group-item';
-
-    li.innerHTML = `Time: ${time.hours}::${time.minutes}::${time.seconds}::${time.milliSeconds}`;
-    
-    listGroup.appendChild(li);
-};
-
-function addToTable(time) {
-    console.log('Working');
-    console.log(tableRow);
-
+function addToTable(time, diff) {
     const tr = document.createElement('tr');
     const th = document.createElement('th');
 
@@ -181,43 +145,47 @@ function addToTable(time) {
     th.textContent = time.id;
 
     const td = document.createElement('td');
-    td.appendChild(document.createTextNode(`${time.hours}::${time.minutes}::${time.seconds}.${time.milliSeconds}`));
+    td.appendChild(document.createTextNode(`${cleaner(time.hours)}:${cleaner(time.minutes)}:${cleaner(time.seconds)}.${cleaner(time.milliSeconds)}`));
+    // lapHour,
+        // lapMins,
+        // lapSeconds,
+        // lapMilliseconds
+    // Difference Element
+    const diffTd = document.createElement('td');
+    diffTd.appendChild(document.createTextNode(`+${cleaner(diff.lapHour)}:${cleaner(diff.lapMins)}:${cleaner(diff.lapSeconds)}.${cleaner(diff.lapMilliseconds)}`))
 
     tr.appendChild(th);
+    tr.appendChild(diffTd);
     tr.appendChild(td);
 
     tableRow.appendChild(tr);
 }
 
-// function differenceInTime(diff) {
+function differenceInTime(time) {
+    console.log(time);
+    console.log(lastLaps);
 
-//     let msec = diff;
+    lapHour = time.hours - lastLaps.hours;
+    lapMins = time.minutes - lastLaps.mins;
+    lapSeconds = time.seconds - lastLaps.secs;
+    lapMilliseconds = Math.abs(time.milliSeconds - lastLaps.milliseconds);
 
-//     let hrs = Math.floor(msec / 1000 / 60 / 60);
-//     console.log("Hours : " + hrs);
-//     msec -= hrs * 1000 * 60 * 60;
+    lastLaps = {
+        hours: time.hours,
+        mins: time.minutes,
+        secs: time.seconds,
+        milliseconds: time.milliSeconds,
+    };
+    console.log(lastLaps);
 
-//     let minutes = Math.floor(msec / 1000 / 60);
-//     console.log("Minutes : " + minutes);
-//     msec -= minutes * 1000 * 60;
-
-//     let seconds = Math.floor(msec / 1000);
-//     console.log("Seconds: " + seconds);
-//     msec -= seconds * 1000;
-
-//     seconds += Math.floor(msec / 100);
-
-//     msec = msec % 100;
-
-//     console.log("Milliseconds : " + msec);
-
-//     return {
-//         hours: hrs,
-//         minutes: minutes,
-//         seconds: seconds,
-//         milliseconds: msec
-//     }
-// };
+    return {
+        lapHour,
+        lapMins,
+        lapSeconds,
+        lapMilliseconds
+    };
+    
+};
 
 
 (function innit() {
