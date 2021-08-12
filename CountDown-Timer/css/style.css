@@ -22,7 +22,8 @@ body {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
-  min-height: 100vh;
+  max-height: 100%;
+  max-width: 100%;
 }
 
 .container {
@@ -51,15 +52,15 @@ body {
 .container .time-showcase {
   display: -ms-grid;
   display: grid;
-  -ms-grid-columns: (1fr)[5];
-      grid-template-columns: repeat(5, 1fr);
+  -ms-grid-columns: (1fr);
+  grid-template-columns: repeat(5, 1fr);
   grid-gap: 200px;
   -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
   -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
   margin-top: 20px;
 }
 /*# sourceMappingURL=style.css.map */

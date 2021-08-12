@@ -7,26 +7,30 @@ let seconds = document.querySelector('#seconds');
 let specific_timer = document.querySelector('.am-or-pm');
 
 
-let today = '13th May, 2021';
+// let today = '13th May, 2021';
+const nextYear = new Date().getFullYear() + 1;
+const newYear = new Date(`01-01-${nextYear}`);
 
 function initialize() {
-
+    
     //current time
     let current = new Date();
+    let diff = new Date(newYear - current);
+
     
-    let currentMonth = String(current.getMonth()).padStart(2, '0');
+    let currentMonth = String(diff.getMonth()).padStart(2, '0');
     month.textContent = currentMonth;
     
-    let currentDay = current.getDate();
+    let currentDay = diff.getDate();
     days.textContent = currentDay;
     
-    let currentHour = current.getHours();
+    let currentHour = diff.getHours();
     hours.textContent = currentHour;
     
-    let currentMinute = current.getMinutes();
+    let currentMinute = diff.getMinutes();
     minutes.textContent = currentMinute;
     
-    let currentsecond = current.getSeconds();
+    let currentsecond = diff.getSeconds();
     seconds.textContent = currentsecond;
 }
 
