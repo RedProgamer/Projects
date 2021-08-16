@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>DOM Array Methods</title>
+  </head>
+  <style>
+      * {
+  box-sizing: border-box;
+}
+
+body {
+  background: #f4f4f4;
+  font-family: Arial, Helvetica, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+}
+
+.container {
+  display: flex;
+  padding: 20px;
+  margin: 0 auto;
+  max-width: 100%;
+  width: 800px;
+}
+
+aside {
+  padding: 10px 20px;
+  width: 250px;
+  border-right: 1px solid #111;
+}
+
+button {
+  cursor: pointer;
+  background-color: #fff;
+  border: solid 1px #111;
+  border-radius: 5px;
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+main {
+  flex: 1;
+  padding: 10px 20px;
+}
+
+h2 {
+  border-bottom: 1px solid #111;
+  padding-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  font-weight: 300;
+  margin: 0 0 20px;
+}
+
+h3 {
+  background-color: #fff;
+  border-bottom: 1px solid #111;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  font-weight: 300;
+  margin: 20px 0 0;
+}
+
+.person {
+  display: flex;
+  justify-content: space-between;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+  </style>
+  <body>
+    <h1>DOM Array Methods</h1>
+
+    <div class="container">
+      <aside>
+        <button id="add-user">Add User 👱‍♂️</button>
+        <button id="double">Double Money 💰</button>
+        <button id="show-millionaires">Show Only Millionaires 💵</button>
+        <button id="sort">Sort by Richest ↓</button>
+        <button id="calculate-wealth">Calculate entire Wealth 🧮</button>
+      </aside>
+
+      <main id="main">
+        <h2><strong>Person</strong> Wealth</h2>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
