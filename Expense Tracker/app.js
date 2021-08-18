@@ -34,6 +34,14 @@ const ItemCtrl = (function() {
             return item;
         },
 
+        removeElement: function(id) {
+            const ids = data.items.map(item => item.id);
+
+            const index = ids.indexOf(id);
+
+            data.items.splice(index, 1);
+        },
+
         calcTotalIncome: function() {
             let totalIncome = 0;
             data.items.forEach(function(item) {
@@ -76,7 +84,8 @@ const UICtrl = (function() {
         income: '#money-plus',
         expense: '#money-minus',
         smallMsg: 'small',
-        list: 'li',
+        list: '#items',
+        deleteBtn: '.delete-btn',
     };
 
     return {
@@ -91,9 +100,10 @@ const UICtrl = (function() {
             const amount = Math.abs(item.amount);
 
             li.className = classValue;
+            li.id = `items-${item.id}`;
             li.innerHTML = `${item.text} <span>${sign}$${amount}</span><button class="delete-btn">x</button>`
             
-            list.insertAdjacentElement('beforeend', li);            
+            list.insertAdjacentElement('beforeend', li);
         },
 
         showAmount(total, income, expense) {
@@ -111,6 +121,7 @@ const UICtrl = (function() {
             parentElement.classList.remove('success');
             parentElement.classList.remove('error');
             parentElement.classList.add('error');
+            // parentElement.classList.remove('error');
 
             errorTextMessage.style.visibility = 'visible';
             errorTextMessage.innerText = msg;
@@ -126,9 +137,11 @@ const UICtrl = (function() {
             errorTextMessage.style.visibility = 'hidden';
         },
 
-        deleteItem: function() {
-            
-        }
+        deleteItem: function(event) {
+            if(event.classList.contains('delete-btn')) {
+                event.parentElement.remove();
+            }
+        },
 
         clearInputFields: function() {
             document.querySelector(UISelector.inputItemName).value = '';
@@ -153,6 +166,7 @@ const AppCtrl = (function(ItemCtrl, UICtrl) {
     
     function loadEventListener() {
         document.querySelector(UI.form).addEventListener('submit', submittedForm);
+        document.querySelector(UI.moneyLists).addEventListener('click', deleteItem);
     };
 
     const submittedForm = function(e) {
@@ -177,10 +191,10 @@ const AppCtrl = (function(ItemCtrl, UICtrl) {
 
         if(correctText && correctAmt) {
             // Add Elements to the data structure
-            ItemCtrl.addElement(values.text, values.amount);
+            const dataStructure = ItemCtrl.addElement(values.text, values.amount);
     
             // Add new item in the lists
-            UICtrl.showItems(values);
+            UICtrl.showItems(dataStructure);
     
             // Clear Input Fields
             UICtrl.clearInputFields();
@@ -198,6 +212,30 @@ const AppCtrl = (function(ItemCtrl, UICtrl) {
 
         e.preventDefault();
     };
+
+    const deleteItem = function(e) {
+        const position = e.target;
+
+        // Remove Element from data structure
+        if(position.className === 'delete-btn') {
+            const selectedItem = position.parentElement.id;
+            const id = selectedItem.split('-')[1];
+            
+            ItemCtrl.removeElement(parseInt(id));
+        }
+
+        // Remove Element from UI
+        UICtrl.deleteItem(position);
+
+        // Calculate Total Amount
+        const amount = {
+            income: ItemCtrl.calcTotalIncome(),
+            expense: ItemCtrl.calcTotalExpense(),
+            total: ItemCtrl.calcTotalAmount(),
+        };
+
+        UICtrl.showAmount(amount.total, amount.income, amount.expense);
+    }
 
     return {
         init: function() {

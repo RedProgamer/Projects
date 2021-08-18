@@ -154,6 +154,9 @@ input[type='number'] {
 
 .form-control.error input {
   border-color: var(--error-color);
+  position: relative;
+  animation: shake .1s linear;
+  animation-iteration-count: 3;
 }
 
 .form-control.success input {
@@ -163,4 +166,10 @@ input[type='number'] {
 .form-control small {
   color: var(--error-color);
   visibility: hidden;
+}
+
+/* Shaking animation */
+@keyframes shake {
+  0% { left: -5px; }
+  100% { right: -5px; }
 }
