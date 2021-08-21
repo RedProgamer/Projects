@@ -1,3 +1,48 @@
+const StorageCtrl = (function() {
+    return {
+        storeData: function(item) {
+            let items;
+
+            if(localStorage.getItem('budget') === null) {
+                items = [];
+
+                items.push(item);
+
+                localStorage.setItem('budget', JSON.stringify(items));
+            }else {
+                // Getting existing data from localStorage
+                items = JSON.parse(localStorage.getItem('budget'));
+                
+                items.push(item);
+                localStorage.setItem('budget', JSON.stringify(items));
+            }
+        },
+
+        getData: function() {
+            let items;
+            if(localStorage.getItem('budget') === null) {
+                items = [];
+            }else {
+                items = JSON.parse(localStorage.getItem('budget'));
+            }
+
+            return items;
+        },
+
+        deleteItem: function(id) {
+            let items = JSON.parse(localStorage.getItem('budget'));
+
+            const ids = items.map(item => item.id);
+            const index = ids.indexOf(id);
+
+            items.splice(index, 1);
+
+            localStorage.setItem('budget', JSON.stringify(items));
+        }
+
+    }
+})();
+
 const ItemCtrl = (function() {
 
     const Item = function(id, text, amount) {
@@ -7,10 +52,7 @@ const ItemCtrl = (function() {
     };
 
     const data = {
-    items:[
-        // {id: 1, text: "IPhone", amount: -900},
-        // {id: 2, text: "Client Payment", amount: 1000},
-        ],
+    items: StorageCtrl.getData(),
     totalAmount: 0,
     totalIncome: 0,
     totalExpense: 0,
@@ -29,6 +71,10 @@ const ItemCtrl = (function() {
             }
 
             const item = new Item(id(), text, amount);
+            
+            // Adding item to localStorage
+            StorageCtrl.storeData(item);
+
             data.items.push(item);
 
             return item;
@@ -88,6 +134,10 @@ const UICtrl = (function() {
         deleteBtn: '.delete-btn',
     };
 
+    function formatMoney(money) {
+        return '$' + money.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+    }
+
     return {
         UISelector: ()=> { return UISelector; },
 
@@ -101,7 +151,7 @@ const UICtrl = (function() {
 
             li.className = classValue;
             li.id = `items-${item.id}`;
-            li.innerHTML = `${item.text} <span>${sign}$${amount}</span><button class="delete-btn">x</button>`
+            li.innerHTML = `${item.text} <span>${sign}${formatMoney(amount)}</span><button class="delete-btn">x</button>`
             
             list.insertAdjacentElement('beforeend', li);
         },
@@ -109,9 +159,9 @@ const UICtrl = (function() {
         showAmount(total, income, expense) {
             const sign = total < 0 ? '-' : '+';
 
-            document.querySelector(UISelector.balance).textContent = `${sign}$${Math.abs(Number(total.toFixed(2)))}`;
-            document.querySelector(UISelector.income).textContent =  `+$${income.toFixed(2)}`;
-            document.querySelector(UISelector.expense).textContent = `-$${expense.toFixed(2)}`;
+            document.querySelector(UISelector.balance).textContent = `${sign}${formatMoney(Math.abs(total))}`;
+            document.querySelector(UISelector.income).textContent =  `+${formatMoney(income)}`;
+            document.querySelector(UISelector.expense).textContent = `-${formatMoney(expense)}`;
         },
 
         showError: function(elementName, msg) {
@@ -159,7 +209,7 @@ const UICtrl = (function() {
 })();
 
 
-const AppCtrl = (function(ItemCtrl, UICtrl) {
+const AppCtrl = (function(StorageCtrl, ItemCtrl, UICtrl) {
 
     const UI = UICtrl.UISelector();
     let correctAmt = null, correctText = null;
@@ -221,8 +271,13 @@ const AppCtrl = (function(ItemCtrl, UICtrl) {
             const selectedItem = position.parentElement.id;
             const id = selectedItem.split('-')[1];
             
+            // Removing element from data structure
             ItemCtrl.removeElement(parseInt(id));
+            
+            // Removing Element from localStorage
+            StorageCtrl.deleteItem(parseInt(id));
         }
+
 
         // Remove Element from UI
         UICtrl.deleteItem(position);
@@ -246,7 +301,10 @@ const AppCtrl = (function(ItemCtrl, UICtrl) {
             // Getting the items from the data structure
             const items = ItemCtrl.getItems();
             
-            
+            // Display Items in UI
+            items.forEach((item) => {
+                UICtrl.showItems(item);
+            });
 
             //Calculate Amount
             const amount = {
@@ -262,7 +320,7 @@ const AppCtrl = (function(ItemCtrl, UICtrl) {
             loadEventListener();
         }
     }
-})(ItemCtrl, UICtrl);
+})(StorageCtrl,ItemCtrl, UICtrl);
 
 
 AppCtrl.init();
