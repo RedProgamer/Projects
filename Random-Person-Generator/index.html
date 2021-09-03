@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+  <title>Random Person Profiles</title>
+</head>
+<style>
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .list-group {
+    width: 50%;
+  }
+
+  .buttons{
+      display: grid;
+      grid-template-columns: 100px 100px;
+      align-items: center;
+      justify-content: center;  
+      grid-gap: 10px;
+      cursor: pointer;
+  }
+
+  .mb-5 {
+        border: 6px solid #212529;
+        padding: 10px;
+        border-radius: 25px;
+    }
+
+  @media only screen and (max-width: 600px) {
+      .list-group {
+          width: 90%;
+      }
+      
+  }
+  
+  @media only screen and (min-width: 400px) {
+      .list-group {
+          width: 335px;
+      }
+  }
+</style>
+<body>
+  <h1 class="fw-bold text-center mt-3">Random Profiles</h1>
+
+  <div class="container">
+      <div class="content mx-5 pt-5 px-2 text-center">
+    
+        <img class="mb-5" src="" alt="random-image">
+    
+        <ul class="list-group">
+          <li class="list-group-item">An item</li>
+          <li class="list-group-item">A second item</li>
+          <li class="list-group-item">A third item</li>
+          <li class="list-group-item">A fourth item</li>
+          <li class="list-group-item">And a fifth one</li>
+        </ul>
+    </div>
+    <div class="buttons mt-3">
+      <button class="btn btn-dark" id="prev" disabled="true">Previous</button>
+      <button class="btn btn-dark" id="next">Next</button>
+    </div>
+  </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
