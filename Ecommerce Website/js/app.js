@@ -2,7 +2,7 @@ const cart_row = document.querySelector('.cart-row');
 const cart_items = document.querySelector('.cart-items');
 const total_price = document.querySelector('.cart-total-price');
 const shop_items = document.querySelectorAll('.shop-items');
-const scroller = cart_row.querySelector('.cart-quantity-input');
+const scroller = document.querySelectorAll('#quantity');
 
 const itemCtrl = (function(){
     const data = {
@@ -41,7 +41,7 @@ const itemCtrl = (function(){
         },
 
         addNewItem(title, imgSource, price, quantity) {
-            const ID = this.getItemById();
+            const ID = this.getLatestId();
             const obj = {id: ID, title, img: imgSource, price: price, quantity};
     
             data.item.push(obj);
@@ -58,6 +58,10 @@ const itemCtrl = (function(){
 
         removeItemById(id) {
             data.item.splice(id, 1);
+        },
+
+        changeItemQuantity(idx, qnt) {
+            data.item[idx].quantity = qnt;
         },
     }
 })();
@@ -80,8 +84,8 @@ const uiCtrl = (function() {
                     </div>
                     <span class="cart-price cart-column">$${item.price}</span>
                     <div class="cart-quantity cart-column">
-                        <input class="cart-quantity-input" type="number" value="1" min="0" max="100">
-                        <button class="btn btn-danger" type="button">REMOVE</button>
+                    <input class="cart-quantity-input" type="number" value="1" min="1" max="50">
+                    <button class="btn btn-danger" type="button">REMOVE</button>
                     </div>
                 </div>`;
             });
@@ -101,8 +105,8 @@ const uiCtrl = (function() {
             </div>
             <span class="cart-price cart-column">$${item.price}</span>
             <div class="cart-quantity cart-column">
-                <input class="cart-quantity-input" type="number" value="${item.quantity}" min="0" max="100">
-                <button class="btn btn-danger" type="button">REMOVE</button>
+            <input class="cart-quantity-input" type="number" value="1" min="1" max="50">
+            <button class="btn btn-danger" type="button">REMOVE</button>
             </div>`;
 
             cart_items.append(div);
@@ -112,13 +116,20 @@ const uiCtrl = (function() {
             const itemID = `item-${id}`;
             const selectedItem = document.getElementById(itemID);
             selectedItem.remove();
+        },
+
+        changeQuantity: function(id, value) {
+            const itemID = document.getElementById(`item-${id}`);
+            const options = itemID.querySelector('.cart-quantity-input');
+
+            options.value = value;
         }
     }
 })();
 
 const appCtrl = (function(itemCtrl, uiCtrl) {
     const loadEventListener = function() {
-        // Event Listener
+        // Event Listeners 
 
         // For adding an item
         shop_items.forEach(function(item) {
@@ -128,6 +139,11 @@ const appCtrl = (function(itemCtrl, uiCtrl) {
         // Remove element from item
         cart_items.addEventListener('click', removeItem);
 
+        // Change quantity of element
+        $('.cart-quantity-input').change(function() {
+            changeQuantity(this);
+        });
+
     }
 
     const itemAdd = function(e) {
@@ -135,7 +151,7 @@ const appCtrl = (function(itemCtrl, uiCtrl) {
         
         
         if(e.target.classList.contains('shop-item-button')) {
-            let value = 1;
+            let value = 1, flag = false;
         
             const parent = e.target.parentElement.parentElement;
             // Extract the data from HTML item
@@ -147,21 +163,34 @@ const appCtrl = (function(itemCtrl, uiCtrl) {
 
             // Get the already existing items
             const data = itemCtrl.getItems();
-            // Count the quantities
             data.forEach(function(item) {
+                value = item.quantity;
                 if(item.title === title) {
-                    // value++;
-                    alert('Feature not implemented');
+                    console.log('Already Exist');
+                    // Count the quantities
+                    flag = true;
+                    value++;
+
+                    const itemIndex = itemCtrl.getItemById(item.id);
+                    itemCtrl.changeItemQuantity(itemIndex, value);
+
+                    // Change value in UI
+                    uiCtrl.changeQuantity(itemIndex+1, value);
                     return 0;
+                }else {
+                    flag = false;
+                    value = 1;
                 }
             });
-
-            // Add these values to item lists
-            const new_item = itemCtrl.addNewItem(title, img, price, value);
-            console.log(new_item);
-
-            // Show the items in UI
-            uiCtrl.addListItem(new_item);
+            
+            if(!flag) {
+                // Add these values to item lists
+                const new_item = itemCtrl.addNewItem(title, img, price, value);
+                console.log(new_item);
+    
+                // Show the items in UI
+                uiCtrl.addListItem(new_item);
+            }
 
             // Show the total Calories
             const totalItemPrice = itemCtrl.getTotalPrice();
@@ -191,8 +220,17 @@ const appCtrl = (function(itemCtrl, uiCtrl) {
         }
     };
 
-    const changeQuantity = function() {
-        console.log('Changed');
+    const changeQuantity = function(event) {
+        const targetValue = parseInt($(event).val());
+
+        //Get the id of parent
+        const id = parseInt($(event).parent().parent().attr('id').substring(5));
+        const elementItem = itemCtrl.getItemById(id);
+
+        itemCtrl.changeItemQuantity(elementItem, targetValue); 
+
+        const totalItemPrice = itemCtrl.getTotalPrice();
+        uiCtrl.showTotalPrice(totalItemPrice);    
     };
 
     return {
