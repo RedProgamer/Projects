@@ -1,5 +1,5 @@
-const my_client_id = 'f20f69e416c344528351a1fa7910ee19';
-const my_client_secret = 'cfe3e6e9cfb7455e83ad9a6f1c9d6f0e';
+const my_client_id = '';
+const my_client_secret = '';
 const token_url = 'https://accounts.spotify.com/authorize';
 
 const value = `
